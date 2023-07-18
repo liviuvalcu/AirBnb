@@ -18,9 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Value("${knf.secret1}")
-    private String test1;
-
 
     @GetMapping("byEmail")
     public ResponseEntity<UserDto> getAllUsersByEmail(@RequestParam(value = "email") String email){
