@@ -13,9 +13,15 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class AirBnbExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NoSuchElementException.class})
+    @ExceptionHandler(value = {NoSuchElementException.class, HostNotFoundException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request){
-        return handleExceptionInternal(ex, ex.getCause(),
+        return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.NO_CONTENT, request);
+    }
+
+    @ExceptionHandler(value = {ValidationException.class, BookingAlreadyExist.class})
+    protected ResponseEntity<Object> handleValidationException(RuntimeException ex, WebRequest request){
+        return handleExceptionInternal(ex, ex.getMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

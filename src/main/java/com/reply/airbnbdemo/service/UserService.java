@@ -42,6 +42,9 @@ public class UserService {
        UserDto dto = modelMapper.map(user, UserDto.class);
        return dto;
    }
+    public Airbnbuser findByEmailEntity(String email){
+        return userRepository.findByEmail(email);
+    }
 
    public UserDto findByFnameAndLName(String fname, String lName){
         return modelMapper.map(userRepository.findByFnameAndLName(fname, lName).get(), UserDto.class);
@@ -89,7 +92,7 @@ public class UserService {
 
         Host host = Host.builder().build();
         Bankaccount bankaccount = Bankaccount.builder()
-                .id(1)
+                .id(3)
                 .accountType("T1")
                 .routingNum(123)
                 .build();
