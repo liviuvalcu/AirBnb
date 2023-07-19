@@ -3,13 +3,15 @@ package com.reply.airbnbdemo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "accesslog")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Accesslog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
