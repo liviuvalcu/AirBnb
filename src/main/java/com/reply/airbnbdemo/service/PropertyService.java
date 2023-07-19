@@ -11,6 +11,7 @@ import com.reply.airbnbdemo.repository.PropertyRepository;
 import com.reply.airbnbdemo.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class PropertyService {
         propertyRepository.save(propertylisting);
     }
 
+
     public List<PropertyDto> getAllPropertiesByUserEmailOrCountry(String email, String country){
         validationService.validateEmailOrCountry(email, country);
         propertyRepository.getAllByUserEmailOrCountry(email, country);
@@ -50,6 +52,12 @@ public class PropertyService {
                 .stream().map(obj -> modelMapper.map(obj, PropertyDto.class))
                 .collect(Collectors.toList());
 
+    }
+
+    public List<PropertyDto> getAllProperties(){
+        return propertyRepository.findAll().stream()
+                .map(obj -> modelMapper.map(obj, PropertyDto.class))
+                .collect(Collectors.toList());
     }
 
     public Propertylisting getPropertyByName(String propertyName){

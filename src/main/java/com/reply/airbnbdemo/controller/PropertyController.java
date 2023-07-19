@@ -29,4 +29,9 @@ public class PropertyController {
                                                                                   @RequestParam(value = "country", required = false) String country){
         return ResponseEntity.ok( propertyService.getAllPropertiesByUserEmailOrCountry(userEmail, country));
     }
+
+    @GetMapping("all")
+    public ResponseEntity<List<PropertyDto>> getAllPropertiesByUserEmailOrCountry(){
+        return ResponseEntity.ok(propertyService.getAllProperties());
+    }
 }
