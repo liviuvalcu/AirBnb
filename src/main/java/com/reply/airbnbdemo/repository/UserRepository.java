@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Airbnbuser, Integer> {
 
-     Airbnbuser findByEmail(String email);
+     Optional<Airbnbuser> findByEmail(String email);
 
      @Query(value = "select user from Airbnbuser user where user.lName = :lName and user.fname = :fName")
     Optional<Airbnbuser> findByFnameAndLName(String fName, String lName);

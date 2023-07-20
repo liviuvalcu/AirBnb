@@ -69,7 +69,7 @@ public class PropertyService {
     }
 
     private Host getHost(String email){
-        Airbnbuser user  = userRepository.findByEmail(email);
+        Airbnbuser user  = userRepository.findByEmail(email).get();
 
         if(Objects.isNull(user) || Objects.isNull(user.getHost())){
             throw new HostNotFoundException("No host Found");

@@ -1,6 +1,8 @@
 package com.reply.airbnbdemo.controller;
 
 import com.reply.airbnbdemo.bean.UserBean;
+import com.reply.airbnbdemo.dao.RegistrationDao;
+import com.reply.airbnbdemo.dao.SignUpRequest;
 import com.reply.airbnbdemo.dto.UserDto;
 import com.reply.airbnbdemo.enums.UserType;
 import com.reply.airbnbdemo.service.UserService;
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    RegistrationDao registrationDao;
 
 
     @GetMapping("byEmail")
@@ -50,5 +55,12 @@ public class UserController {
         userService.setUserType(userType, userId);
         return ResponseEntity.ok("CREATED");
     }
+
+    @PostMapping("register")
+    public ResponseEntity<String> register(@RequestBody RegistrationDao registrationDao) {
+        userService.register(registrationDao);
+        return new ResponseEntity<>("Create",HttpStatus.CREATED);
+    }
+
 
 }
