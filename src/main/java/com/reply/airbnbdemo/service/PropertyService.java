@@ -8,9 +8,11 @@ import com.reply.airbnbdemo.model.Host;
 import com.reply.airbnbdemo.model.Propertylisting;
 import com.reply.airbnbdemo.repository.HostRepository;
 import com.reply.airbnbdemo.repository.PropertyRepository;
+import com.reply.airbnbdemo.repository.ReviewForPropertyRepository;
 import com.reply.airbnbdemo.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class PropertyService {
 
     @Autowired
     private PropertyRepository propertyRepository;
+
+    @Autowired
+    ReviewForPropertyRepository reviewForPropertyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,5 +68,19 @@ public class PropertyService {
             throw new HostNotFoundException("No host Found");
         }
         return user.getHost();
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void calculateNumberOfRatingsAndAvgRating() {
+        calculateNumberOfRatings();
+        calculateAvgRating();
+    }
+
+    private void calculateNumberOfRatings() {
+        System.out.println(propertyRepository.getNumberOfRatings());
+    }
+
+    private void calculateAvgRating() {
+        System.out.println(reviewForPropertyRepository.getAvgRating());
     }
 }
