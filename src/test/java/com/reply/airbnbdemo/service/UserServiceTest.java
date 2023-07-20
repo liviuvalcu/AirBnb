@@ -1,5 +1,6 @@
 package com.reply.airbnbdemo.service;
 
+import com.reply.airbnbdemo.dto.UserDto;
 import com.reply.airbnbdemo.enums.UserType;
 import com.reply.airbnbdemo.model.Airbnbuser;
 import com.reply.airbnbdemo.repository.BankAccountRepository;
@@ -45,8 +46,17 @@ class UserServiceTest {
 
     @Test
     void setUserType() {
-        when(userRepository.findById(1)).thenReturn(Optional.of(new Airbnbuser()));
+        when(userRepository.findById(1)).thenReturn(Optional.of(Airbnbuser.builder().build()));
         userService.setUserType(UserType.HOST, 1);
+    }
 
+    @Test
+    void findByEmail(){
+        when(userRepository.findByEmail(anyString())).thenReturn(Airbnbuser.builder().email("X").build());
+        when(modelMapper.map(any(Airbnbuser.class), any())).thenReturn(UserDto.builder().email("X").build());
+        UserDto dto = userService.findByEmail("X");
+
+        assertNotNull(dto);
+        assertEquals("X", dto.getEmail());
     }
 }
