@@ -47,6 +47,7 @@ public class PropertyService {
         propertyRepository.save(propertylisting);
     }
 
+
     public List<PropertyDto> getAllPropertiesByUserEmailOrCountry(String email, String country){
         validationService.validateEmailOrCountry(email, country);
         propertyRepository.getAllByUserEmailOrCountry(email, country);
@@ -55,6 +56,12 @@ public class PropertyService {
                 .stream().map(obj -> modelMapper.map(obj, PropertyDto.class))
                 .collect(Collectors.toList());
 
+    }
+
+    public List<PropertyDto> getAllProperties(){
+        return propertyRepository.findAll().stream()
+                .map(obj -> modelMapper.map(obj, PropertyDto.class))
+                .collect(Collectors.toList());
     }
 
     public Propertylisting getPropertyByName(String propertyName){
