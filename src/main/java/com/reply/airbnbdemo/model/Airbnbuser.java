@@ -3,8 +3,7 @@ package com.reply.airbnbdemo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
@@ -14,6 +13,9 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "airbnbuser")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Airbnbuser {
     @Id
     @Column(name = "AirBnBUID", nullable = false)

@@ -19,7 +19,7 @@ public class PropertyController {
 
 
     @PostMapping("create")
-    public ResponseEntity<String> createProperty(PropertyBean propertyBean){
+    public ResponseEntity<String> createProperty(@RequestBody PropertyBean propertyBean){
         propertyService.createProperty(propertyBean);
         return new ResponseEntity<>("CREATED", HttpStatus.CREATED);
     }
