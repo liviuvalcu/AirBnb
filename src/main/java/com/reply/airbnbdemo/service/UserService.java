@@ -51,10 +51,11 @@ public class UserService {
    }
 
    @Transactional
-   public void insertUser(UserBean beanUser){
+   public Integer insertUser(UserBean beanUser){
        Airbnbuser user = modelMapper.map(beanUser, Airbnbuser.class);
        user.setCreated(LocalDateTime.now().toInstant(ZoneOffset.UTC));
-       userRepository.save(user);
+       userRepository.saveAndFlush(user);
+       return user.getId();
    }
 
    @Transactional
@@ -92,7 +93,7 @@ public class UserService {
 
         Host host = Host.builder().build();
         Bankaccount bankaccount = Bankaccount.builder()
-                .id(3)
+                .id(bankAccountRepository.getIdAndIncrement())
                 .accountType("T1")
                 .routingNum(123)
                 .build();
@@ -100,7 +101,8 @@ public class UserService {
         bankAccountRepository.saveAndFlush(bankaccount);
         host.setBankAccountNumber(bankaccount);
         host.setAirbnbuser(user);
-        hostRepository.save(host);
+        user.setHost(host);
+        hostRepository.saveAndFlush(host);
     }
 
 }
