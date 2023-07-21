@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.jupiter.api.Assertions.*;
 import static  org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static  org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.junit.jupiter.api.Assertions.*;
 import static  org.mockito.Mockito.*;
 @WebMvcTest(value = RegistrationController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class, useDefaultFilters = false)
 @Import(RegistrationController.class)
