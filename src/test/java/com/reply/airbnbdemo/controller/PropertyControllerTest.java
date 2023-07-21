@@ -39,7 +39,10 @@ class PropertyControllerTest {
     void createProperty() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/property/create")
-                        .content(objectMapper.writeValueAsString(PropertyBean.builder().propertyName("Test").build()))
+                        .content(objectMapper.writeValueAsString(PropertyBean
+                                .builder()
+                                .propertyName("Test")
+                                .build()))
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isCreated())
                         .andDo(print())

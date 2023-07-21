@@ -77,7 +77,7 @@ public class PropertyService {
         return user.getHost();
     }
 
-    @Scheduled(fixedRate = 1000)
+   // @Scheduled(fixedRate = 1000)
     public void calculateNumberOfRatingsAndAvgRating() {
         calculateNumberOfRatings();
         calculateAvgRating();
