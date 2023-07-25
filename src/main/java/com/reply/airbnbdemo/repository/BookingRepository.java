@@ -18,5 +18,10 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query(value = "select max(b.id) from Booking b")
     Integer getMaxId();
 
+    @Query(value = "select SUM(b.amountPaid) from Booking b where b.guestUID.airbnbuser.email = :email")
+    Integer countAmountSpentByUser(@Param("email") String email);
+
+    @Query(value = "select SUM(FUNCTION('datediff', b.checkOutDate, b.checkInDate)) from Booking b where b.guestUID.airbnbuser.email = :email")
+    Integer countNightsStayed(@Param("email")String email);
 
 }

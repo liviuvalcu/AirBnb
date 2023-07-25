@@ -11,7 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 @Service
@@ -29,7 +32,10 @@ public class BookingService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public void createBooking(BookingBean bean){
+    @Autowired
+    private DiscountService discountService;
+
+    public Booking createBooking(BookingBean bean){
         if(bookingRepository.checkIfCanBeBooked(bean.getCheckInDate(), bean.getPropertyName()) > 0){
             throw new BookingAlreadyExist("Booking not available");
         }
@@ -49,8 +55,26 @@ public class BookingService {
 
         myBooking.setPid(property);
         myBooking.setGuestUID(user.getGuest());
+        myBooking.setAmountPaid(new BigDecimal(updatePrice(bean, property)));
 
         bookingRepository.save(myBooking);
+        return myBooking;
+    }
+
+    private double updatePrice(BookingBean bean, Propertylisting property){
+        Period duration = Period.between(bean.getCheckInDate(), bean.getCheckOutDate());
+        BigDecimal pricePerNight = property.getPricePerNight();
+
+        Integer countAmountSpentByUser = bookingRepository.countAmountSpentByUser(bean.getGuestEmail());
+        Integer countNightsStayed = bookingRepository.countNightsStayed(bean.getGuestEmail());
+
+        Integer discountForBooking = discountService.getDiscount(countAmountSpentByUser, countNightsStayed);
+       //10 - 100 - 10
+        return applyDiscountedPrice(duration.getDays() * pricePerNight.longValue(), discountForBooking);
+    }
+
+    private Double applyDiscountedPrice(Long price, Integer discount){
+        return (double) price - (price * discount)/100;
     }
 
 }
