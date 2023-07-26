@@ -12,9 +12,9 @@ public interface DiscountRepository extends JpaRepository<DiscountModel, Integer
 
     @Query(value = """
                     select d.discount from discount d where 
-                    d.minim_nights = (select max(ds.minim_nights) from discount ds where 
-                    (ds.minim_nights <= :nightsStayed) OR 
-                    (ds.minimal_amount_spent <= :amountSpent))
+                    d.minimNights = (select max(ds.minimNights) from discount ds where 
+                    (ds.minimNights <= :nightsStayed) OR 
+                    (ds.minimalAmountSpent <= :amountSpent))
                     """, nativeQuery = true)
     Integer getDiscountByAmountOrNights(Integer amountSpent, Integer nightsStayed);
 }

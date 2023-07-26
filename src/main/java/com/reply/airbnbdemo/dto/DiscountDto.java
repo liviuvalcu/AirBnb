@@ -18,4 +18,5 @@ public class DiscountDto {
     private Integer minimNights;
     private BigDecimal minimalAmountSpent;
     private DiscountLevels discountLevels;
+    private Integer discount;
 }
