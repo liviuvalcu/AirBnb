@@ -28,7 +28,7 @@ public class DiscountController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("update")
+    @PostMapping("update")
     public ResponseEntity<Object> updateDiscount(@RequestParam("name") String name,
                                                  @RequestParam("minimNights") Integer minimNights,
                                                  @RequestParam("minimalAmountSpent") BigDecimal minimalAmountSpent,

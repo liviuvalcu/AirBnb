@@ -53,7 +53,7 @@ class DiscountControllerTest {
 
     @Test
     void updateDiscount() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/parameters/update")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/parameters/update")
                         .param("name","Test name")
                         .param("minimNights","2")
                         .param("minimalAmountSpent","200")
