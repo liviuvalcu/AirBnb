@@ -51,11 +51,11 @@ public class UserService {
    }
 
    @Transactional
-   public Integer insertUser(UserBean beanUser){
+   public Airbnbuser insertUser(UserBean beanUser){
        Airbnbuser user = modelMapper.map(beanUser, Airbnbuser.class);
        user.setCreated(LocalDateTime.now().toInstant(ZoneOffset.UTC));
        userRepository.saveAndFlush(user);
-       return user.getId();
+       return user;
    }
 
    @Transactional

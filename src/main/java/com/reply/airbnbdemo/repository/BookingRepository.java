@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
@@ -23,5 +24,9 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Query(value = "select SUM(FUNCTION('datediff', b.checkOutDate, b.checkInDate)) from Booking b where b.guestUID.airbnbuser.email = :email")
     Integer countNightsStayed(@Param("email")String email);
+
+
+    @Query(value = "select b from Booking b where b.pid.propertyName = :propertyName")
+    List<Booking> findAllByPropertyName(@Param("propertyName") String propertyName);
 
 }

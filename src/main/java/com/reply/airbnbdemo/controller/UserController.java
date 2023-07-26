@@ -45,6 +45,12 @@ public class UserController {
         return new ResponseEntity<>("CREATED", HttpStatus.CREATED);
     }
 
+    @PutMapping("update")
+    public ResponseEntity<Object> updateUser(UserBean user){
+        userService.insertUser(user);
+        return new ResponseEntity<>("UPDATED", HttpStatus.OK);
+    }
+
     @PostMapping("addType")
     public ResponseEntity<Object> setUserType(@RequestParam("userType")UserType userType, @RequestParam("id") Integer userId){
         userService.setUserType(userType, userId);

@@ -21,7 +21,7 @@ public class RegistrationService {
         JwtAuthenticationResponse responseToken =  authenticationService.signup(registrationDao.getSignUpRequest());
 
         fillMandatoryFields(registrationDao);
-        Integer userId = userService.insertUser(registrationDao.getUserBean());
+        Integer userId = userService.insertUser(registrationDao.getUserBean()).getId();
         userService.setUserType(registrationDao.getUserType(), userId);
 
         if(UserType.HOST.equals(registrationDao.getUserType())){

@@ -58,7 +58,7 @@ class DiscountServiceTest {
 
     @Test
     void getDiscount(){
-        when(discountRepository.getDiscountByAmountOrNights(10, 100)).thenReturn(121);
+       when(discountRepository.getDiscountByAmountOrNights(10, 100)).thenReturn(121);
        Integer discount = discountService.getDiscount(10, 100);
        assertNotNull(discount);
        assertEquals(121, discount);

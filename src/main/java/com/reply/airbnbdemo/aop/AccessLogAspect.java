@@ -21,7 +21,7 @@ public class AccessLogAspect {
     private final AccessLogRepository accessLogRepository;
 
     @Before("execution(* com.reply.airbnbdemo.controller..*..*(..))")
-    public void intercept(JoinPoint joinPoint) throws Throwable {
+    public void intercept(JoinPoint joinPoint)  {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Accesslog accesslog = Accesslog
                 .builder()
