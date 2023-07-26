@@ -109,6 +109,8 @@ public class BookingService {
     }
 
     private Double applyDiscountedPrice(Long price, Integer discount){
+        if(Objects.isNull(discount))
+            return price.doubleValue();
         return (double) price - (price * discount)/100;
     }
 

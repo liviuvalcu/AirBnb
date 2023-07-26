@@ -4,10 +4,7 @@ import com.reply.airbnbdemo.bean.UserBean;
 import com.reply.airbnbdemo.dto.UserDto;
 import com.reply.airbnbdemo.enums.UserType;
 import com.reply.airbnbdemo.model.*;
-import com.reply.airbnbdemo.repository.BankAccountRepository;
-import com.reply.airbnbdemo.repository.CreditCardRepository;
-import com.reply.airbnbdemo.repository.HostRepository;
-import com.reply.airbnbdemo.repository.UserRepository;
+import com.reply.airbnbdemo.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +24,9 @@ public class UserService {
 
    @Autowired
    private HostRepository hostRepository;
+
+   @Autowired
+   private GuestRepository guestRepository;
 
    @Autowired
    private BankAccountRepository bankAccountRepository;
@@ -82,9 +82,11 @@ public class UserService {
                 .cardType("VISA")
                 .build();
 
+        creditCardRepository.saveAndFlush(creditcard);
         guest.setCreditCardNum(creditcard);
+        guest.setAirbnbuser(user);
         user.setGuest(guest);
-        userRepository.save(user);
+        guestRepository.save(guest);
 
     }
 

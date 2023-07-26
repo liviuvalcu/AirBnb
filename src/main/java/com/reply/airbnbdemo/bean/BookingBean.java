@@ -1,17 +1,10 @@
 package com.reply.airbnbdemo.bean;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class BookingBean {
 
