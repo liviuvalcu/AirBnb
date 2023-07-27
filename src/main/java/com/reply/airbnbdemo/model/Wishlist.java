@@ -2,8 +2,7 @@ package com.reply.airbnbdemo.model;
 
 import com.reply.airbnbdemo.model.id.WishlistId;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,6 +12,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "wishlist")
 public class Wishlist {
 

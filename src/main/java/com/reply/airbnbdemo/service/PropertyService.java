@@ -10,32 +10,28 @@ import com.reply.airbnbdemo.repository.HostRepository;
 import com.reply.airbnbdemo.repository.PropertyRepository;
 import com.reply.airbnbdemo.repository.ReviewForPropertyRepository;
 import com.reply.airbnbdemo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PropertyService {
 
-    @Autowired
-    private PropertyRepository propertyRepository;
-
-    @Autowired
-    ReviewForPropertyRepository reviewForPropertyRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ValidationService validationService;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    private final PropertyRepository propertyRepository;
+    private final ReviewForPropertyRepository reviewForPropertyRepository;
+    private final UserRepository userRepository;
+    private final ValidationService validationService;
+    private final PropertyIncludedInWishListService propertyIncludedInWishListService;
+    private final ModelMapper modelMapper;
 
 
     public void createProperty(PropertyBean propertyBean){
@@ -45,6 +41,12 @@ public class PropertyService {
         propertylisting.setId(Objects.isNull(propertyRepository.getMaxId()) ? 1 : propertyRepository.getMaxId() + 1);
 
         propertyRepository.save(propertylisting);
+    }
+
+    @Transactional
+    public void updatePropertyPricePerNight(BigDecimal newPrice, String propertyName){
+        propertyRepository.updatePrice(propertyName, newPrice);
+        propertyIncludedInWishListService.updateChangedFlag(propertyRepository.getByPropertyName(propertyName).getId());
     }
 
 
@@ -66,6 +68,10 @@ public class PropertyService {
 
     public Propertylisting getPropertyByName(String propertyName){
         return propertyRepository.getByPropertyName(propertyName);
+    }
+
+    public List<Propertylisting> getPropertiesByName(List<String> listOfNames){
+        return propertyRepository.getAllByNames(listOfNames);
     }
 
     private Host getHost(String email){

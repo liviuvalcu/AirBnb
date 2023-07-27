@@ -2,8 +2,7 @@ package com.reply.airbnbdemo.model;
 
 import com.reply.airbnbdemo.model.id.PropertyincludedinwishlistId;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,6 +11,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "propertyincludedinwishlist")
 public class Propertyincludedinwishlist {
     @EmbeddedId
@@ -32,8 +34,6 @@ public class Propertyincludedinwishlist {
     @MapsId("id")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-
-
     @PrimaryKeyJoinColumns(value = {
             @PrimaryKeyJoinColumn(name = "WishlistName", referencedColumnName = "AirBnBUID"),
             @PrimaryKeyJoinColumn(name = "WishlistName", referencedColumnName = "WishlistName")
@@ -45,5 +45,8 @@ public class Propertyincludedinwishlist {
 
     @Column(name = "CheckOutDate")
     private LocalDate checkOutDate;
+
+    @Column(name="modifiedFlag")
+    private Boolean flag;
 
 }

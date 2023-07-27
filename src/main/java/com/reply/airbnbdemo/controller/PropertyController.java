@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,15 @@ public class PropertyController {
         propertyService.createProperty(propertyBean);
         return new ResponseEntity<>("CREATED", HttpStatus.CREATED);
     }
+
+    @PutMapping("updatePrice")
+    public ResponseEntity<String> updatePropertyPrice(@RequestParam("propertyName") String propertyName,
+                                                      @RequestParam("newPrice")BigDecimal newPrice){
+        propertyService.updatePropertyPricePerNight(newPrice, propertyName);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     @GetMapping("allByEmailOrCountry")
     public ResponseEntity<List<PropertyDto>> getAllPropertiesByUserEmailOrCountry(@RequestParam(value = "userEmail", required = false) String userEmail,
