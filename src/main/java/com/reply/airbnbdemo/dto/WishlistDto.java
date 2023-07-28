@@ -2,20 +2,23 @@ package com.reply.airbnbdemo.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class WishlistDto {
 
-    @NotNull
-    private final Integer idAirBnBUID;
+    private  Integer idAirBnBUID;
 
-    @Size(max = 50)
-    @NotNull
-    private final String idWishlistName;
+    private  String idWishlistName;
 
-    private final Character privacy;
+    private  Character privacy;
 }

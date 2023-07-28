@@ -1,11 +1,9 @@
 package com.reply.airbnbdemo.service;
 
 import com.reply.airbnbdemo.dto.WishlistDto;
-import com.reply.airbnbdemo.exception.WishListNotFoundException;
 import com.reply.airbnbdemo.model.Airbnbuser;
 import com.reply.airbnbdemo.model.Wishlist;
 import com.reply.airbnbdemo.model.id.WishlistId;
-import com.reply.airbnbdemo.repository.PropertyIncludedInWishListRepository;
 import com.reply.airbnbdemo.repository.WishListRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,13 +41,13 @@ public class WishListService {
 
     }
 
-    public void updateWishList(String userEmail, String wishListName, String privacy, List<String> propertiesToBeIncluded){
+    public void  updateWishList(String userEmail, String wishListName, String privacy, List<String> propertiesToBeIncluded){
         Airbnbuser user = userService.findByEmailEntity(userEmail);
         Wishlist wishlist = wishListRepository.findById(WishlistId.builder().wishlistName(wishListName).airBnBUID(user.getId()).build()).orElseThrow();
         wishlist.setPrivacy(privacy.charAt(0));
         wishlist.getId().setWishlistName(wishListName);
         wishListRepository.saveAndFlush(wishlist);
-        propertyIncludedInWishListService.addPropertyInWishList(wishlist, propertyService.getPropertiesByName(propertiesToBeIncluded));
+        propertyIncludedInWishListService.addNewProperties(wishlist, propertyService.getPropertiesByName(propertiesToBeIncluded));
     }
 
     public void addNewProperties(String userEmail, String wishListName, List<String> propertiesToBeIncluded){

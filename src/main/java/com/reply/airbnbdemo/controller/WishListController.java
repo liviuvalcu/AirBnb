@@ -19,9 +19,9 @@ public class WishListController {
     private final WishListService wishListService;
 
     @PostMapping("create")
-    public ResponseEntity<String> createWishList(@Param("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
-                                                 @Param("wishListName") String wishListName,
-                                                 @Param("privacy") String privacy,
+    public ResponseEntity<String> createWishList(@RequestParam("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
+                                                 @RequestParam("wishListName") String wishListName,
+                                                 @RequestParam("privacy") String privacy,
                                                  Authentication authentication){
         wishListService.createWishList(authentication.getName(), wishListName, privacy,  propertiesToBeIncluded);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -29,8 +29,8 @@ public class WishListController {
 
     @PostMapping("update")
     public ResponseEntity<String> updateWishList(@RequestParam("wishListName")String wishListName,
-                                                 @Param("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
-                                                 @Param("privacy") String privacy,
+                                                 @RequestParam("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
+                                                 @RequestParam("privacy") String privacy,
                                                  Authentication authentication){
         wishListService.updateWishList(authentication.getName(), wishListName, privacy, propertiesToBeIncluded);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -38,13 +38,13 @@ public class WishListController {
 
     @PostMapping("addProperties")
     public ResponseEntity<String> addPropertiesWishList(@RequestParam("wishListName")String wishListName,
-                                                 @Param("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
+                                                        @RequestParam("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
                                                  Authentication authentication){
         wishListService.addNewProperties(authentication.getName(), wishListName, propertiesToBeIncluded);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("update")
+    @DeleteMapping("delete")
     public ResponseEntity<String> deleteWishList(@RequestParam("wishListName")String wishListName, Authentication authentication){
         wishListService.deleteWishList(wishListName, authentication.getName());
         return new ResponseEntity<>(HttpStatus.OK);
