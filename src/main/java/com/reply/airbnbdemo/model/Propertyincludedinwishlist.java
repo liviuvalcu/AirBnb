@@ -32,10 +32,10 @@ public class Propertyincludedinwishlist {
     private Guest airBnBUID;
 
     @MapsId("id")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @PrimaryKeyJoinColumns(value = {
-            @PrimaryKeyJoinColumn(name = "WishlistName", referencedColumnName = "AirBnBUID"),
+            @PrimaryKeyJoinColumn(name = "AirBnBUID", referencedColumnName = "AirBnBUID"),
             @PrimaryKeyJoinColumn(name = "WishlistName", referencedColumnName = "WishlistName")
     })
     private Wishlist wishlistName;

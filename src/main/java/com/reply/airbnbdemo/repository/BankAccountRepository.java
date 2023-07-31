@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BankAccountRepository extends JpaRepository<Bankaccount, Integer> {
 
-    @Query(value = "select max(ba.AccountNUMBER) + 1 from bankaccount ba", nativeQuery = true)
+    @Query(value = "select coalesce(max(ba.AccountNUMBER), 1) from bankaccount ba", nativeQuery = true)
     Integer getIdAndIncrement();
 }

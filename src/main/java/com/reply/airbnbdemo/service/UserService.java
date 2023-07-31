@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -73,9 +74,10 @@ public class UserService {
 
     private void createGuest(Integer userId) {
        Airbnbuser user = userRepository.findById(userId).get();
-
+        Integer id = creditCardRepository.getMaxId();
         Guest guest = Guest.builder().build();
         Creditcard creditcard = Creditcard.builder()
+                .id(Objects.isNull(id) ? 1 : ++id)
                 .csv(001)
                 .expirationDate(LocalDate.now())
                 .cardholderName(user.getLName() + " " + user.getFname())
@@ -95,7 +97,7 @@ public class UserService {
 
         Host host = Host.builder().build();
         Bankaccount bankaccount = Bankaccount.builder()
-                .id(bankAccountRepository.getIdAndIncrement())
+                .id(bankAccountRepository.getIdAndIncrement() + 1)
                 .accountType("T1")
                 .routingNum(123)
                 .build();

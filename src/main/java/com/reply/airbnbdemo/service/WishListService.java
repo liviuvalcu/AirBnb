@@ -65,7 +65,13 @@ public class WishListService {
     }
 
     public List<WishlistDto> getAll(String username){
-      return   wishListRepository.findAllByUserName(username).stream().map(wishList -> modelMapper.map(wishList, WishlistDto.class)).collect(Collectors.toList());
+      return   wishListRepository.findAllByUserName(username).stream().map(wishList -> {
+          WishlistDto dto = modelMapper.map(wishList, WishlistDto.class);
+
+          dto.setIdAirBnBUID(wishList.getAirBnBUID().getId());
+          dto.setIdWishlistName(wishList.getId().getWishlistName());
+          return dto;
+      }).collect(Collectors.toList());
     }
 
     public List<Wishlist> getAllEntity(String username){

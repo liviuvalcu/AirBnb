@@ -27,7 +27,13 @@ public class PropertyIncludedInWishListService {
                     .wishlistName(wishlist.getId().getWishlistName())
                     .pid(property.getId())
                     .build();
-            Propertyincludedinwishlist propertyincludedinwishlist = Propertyincludedinwishlist.builder().id(id).pid(property).wishlistName(wishlist).build();
+            Propertyincludedinwishlist propertyincludedinwishlist = Propertyincludedinwishlist.builder()
+                    .airBnBUID(wishlist.getAirBnBUID())
+                    .id(id)
+                    .flag(false)
+                    .pid(property)
+                    .wishlistName(wishlist)
+                    .build();
             propertyIncludedInWishListRepository.saveAndFlush(propertyincludedinwishlist);
         });
 
