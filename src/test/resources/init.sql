@@ -35,7 +35,7 @@ CREATE TABLE test.propertyincludedinwishlist(
                                                   PRIMARY KEY(PID,AirBnBUID,WishlistName));
 
 CREATE TABLE test.wishlist(
-                                AirBnBUID INT NOT NULL default 0,
+                                AirBnBUID INT NOT NULL,
                                 WishlistName VARCHAR(50) NOT NULL UNIQUE,
                                 Privacy CHAR(1),
                                 PRIMARY KEY(AirBnBUID,WishlistName));
@@ -97,3 +97,8 @@ CREATE TABLE test.propertylisting(
                                        PRIMARY KEY(PID));
 
 create TABLE test.accesslog (id BIGINT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, methodName VARCHAR(255) NOT NULL, CONSTRAINT pk_log PRIMARY KEY (id));
+
+ALTER TABLE test.propertyincludedinwishlist ADD CONSTRAINT PropertyIncludedInWishlistFK_1 FOREIGN KEY(AirBnBUID) REFERENCES test.guest(AirBnBUID) ON DELETE CASCADE ;
+ALTER TABLE test.propertyincludedinwishlist ADD CONSTRAINT PropertyIncludedInWishlistFK_2 FOREIGN KEY(PID) REFERENCES test.propertylisting(PID) ON DELETE CASCADE ;
+ALTER TABLE test.propertyincludedinwishlist ADD CONSTRAINT PropertyIncludedInWishlistFK_3 FOREIGN KEY(WishlistName) REFERENCES test.wishlist(WishlistName) ON DELETE CASCADE;
+ALTER TABLE test.wishlist ADD CONSTRAINT WishListFK_1 FOREIGN KEY(AirBnBUID) REFERENCES test.guest(AirBnBUID) ON DELETE CASCADE;

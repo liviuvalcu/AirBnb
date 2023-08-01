@@ -70,6 +70,10 @@ public class PropertyService {
         return propertyRepository.getByPropertyName(propertyName);
     }
 
+    public PropertyDto getPropertyByNameDto(String propertyName){
+        return modelMapper.map(propertyRepository.getByPropertyName(propertyName), PropertyDto.class);
+    }
+
     public List<Propertylisting> getPropertiesByName(List<String> listOfNames){
         return propertyRepository.getAllByNames(listOfNames);
     }

@@ -85,4 +85,8 @@ public class PropertyIncludedInWishListService {
         propertyIncludedInWishListRepository.updateModifiedFlag(propertyId);
     }
 
+    public List<Propertyincludedinwishlist> getAllByName(String username, String wishListName){
+        return propertyIncludedInWishListRepository.getAllByUserNameAndName(username, wishListName);
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface PropertyIncludedInWishListRepository extends JpaRepository<Propertyincludedinwishlist, PropertyincludedinwishlistId> {
 
@@ -28,4 +29,7 @@ public interface PropertyIncludedInWishListRepository extends JpaRepository<Prop
                         @Param("checkInDate") LocalDate checkInDate,
                         @Param("checkOutDate") LocalDate checkOutDate,
                         @Param("flag") boolean flag);
+
+    @Query(value = "select p from Propertyincludedinwishlist  p where p.airBnBUID.airbnbuser.email = :userName and p.id.wishlistName = :name")
+    List<Propertyincludedinwishlist> getAllByUserNameAndName(@Param("userName") String userName, @Param("name") String name);
 }

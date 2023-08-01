@@ -38,7 +38,7 @@ public class Propertyincludedinwishlist {
             @PrimaryKeyJoinColumn(name = "AirBnBUID", referencedColumnName = "AirBnBUID"),
             @PrimaryKeyJoinColumn(name = "WishlistName", referencedColumnName = "WishlistName")
     })
-    private Wishlist wishlistName;
+    private transient Wishlist wishlistName;
 
     @Column(name = "CheckInDate")
     private LocalDate checkInDate;

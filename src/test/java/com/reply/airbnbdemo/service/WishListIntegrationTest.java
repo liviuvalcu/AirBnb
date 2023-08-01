@@ -1,10 +1,13 @@
 package com.reply.airbnbdemo.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reply.airbnbdemo.AirBnbDemoApplication;
 import com.reply.airbnbdemo.TestConfig;
 import com.reply.airbnbdemo.bean.PropertyBean;
 import com.reply.airbnbdemo.bean.UserBean;
 import com.reply.airbnbdemo.controller.WishListController;
+import com.reply.airbnbdemo.dto.PropertyDto;
 import com.reply.airbnbdemo.enums.UserType;
 import com.reply.airbnbdemo.model.Airbnbuser;
 import com.reply.airbnbdemo.utils.ObjectCreatorUtility;
@@ -19,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -32,6 +36,10 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+
+import java.math.BigDecimal;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,6 +61,9 @@ public class WishListIntegrationTest {
 
     @Autowired
     PropertyService propertyService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final String EMAIL = "test@gmail.com";
     private static final String EMAIL_HOST = "test_H@gmail.com";
@@ -115,12 +126,82 @@ public class WishListIntegrationTest {
         assertNotNull(actualResponseBody);
 
         //3.Assert that we don't have any messages to be shown for price change
+        MvcResult messagesResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/messages/propertyUpdated")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
 
+        assertNotNull(messagesResult);
+        String actualMessageResponseBody = messagesResult.getResponse().getContentAsString();
+        assertNotNull(actualMessageResponseBody);
+        List<String> res = objectMapper.readValue(actualMessageResponseBody, new TypeReference<List<String>>() {});
+        assertNotNull(res);
+        assertEquals(0, res.size());
 
         //4.Update price
+
+        MvcResult propertyBeforePriceChangeResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/property/byName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("propertyName", ObjectCreatorUtility.PROPERTY_NAME_1)
+                        )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        BigDecimal pricePerNightBefore = objectMapper.readValue(propertyBeforePriceChangeResult.getResponse().getContentAsString(), PropertyDto.class).getPricePerNight();
+
+        MvcResult priceResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/property/updatePrice")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("propertyName", ObjectCreatorUtility.PROPERTY_NAME_1)
+                        .param("newPrice", "200"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        assertNotNull(priceResult);
+
         //5.Assert new price
+
+        MvcResult propertyAfterPriceChangeResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/property/byName")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("propertyName", ObjectCreatorUtility.PROPERTY_NAME_1)
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+        BigDecimal pricePerNightAfter = objectMapper.readValue(propertyAfterPriceChangeResult.getResponse().getContentAsString(), PropertyDto.class).getPricePerNight();
+
+        assertNotEquals(pricePerNightBefore.intValue(), pricePerNightAfter.intValue());
+        assertEquals(200, pricePerNightAfter.intValue());
+
         //6.Assert that we have messages to be shown
+
+        MvcResult messagesAfterResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/messages/propertyUpdated")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        assertNotNull(messagesAfterResult);
+        String actualAfterMessageResponseBody = messagesAfterResult.getResponse().getContentAsString();
+        assertNotNull(actualAfterMessageResponseBody);
+        List<String> result = objectMapper.readValue(actualAfterMessageResponseBody, new TypeReference<List<String>>() {});
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
         //7.Assert that flag is false and we don't have any messages to be shown
+
+        MvcResult message = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/messages/propertyUpdated")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        assertNotNull(message);
+        String messageContent = message.getResponse().getContentAsString();
+        assertNotNull(messageContent);
+        List<String> resultMessageContent = objectMapper.readValue(messageContent, new TypeReference<List<String>>() {});
+        assertNotNull(resultMessageContent);
+        assertEquals(0, resultMessageContent.size());
     }
 
     private Airbnbuser createBnBUser(UserType userType, String email){
@@ -145,6 +226,7 @@ public class WishListIntegrationTest {
         propertyService.createProperty(PropertyBean
                 .builder()
                 .zipcode(123)
+                .pricePerNight(new BigDecimal(100))
                 .hostEmail(email)
                 .propertyName(propertyName)
                 .build());

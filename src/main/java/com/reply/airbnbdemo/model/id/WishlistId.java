@@ -19,6 +19,7 @@ import java.util.Objects;
 @Embeddable
 public class WishlistId implements Serializable {
     private static final long serialVersionUID = -269144558419292609L;
+
     @NotNull
     @Column(name = "AirBnBUID", nullable = false)
     private Integer airBnBUID;

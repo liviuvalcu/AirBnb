@@ -23,7 +23,7 @@ public class MessageService {
         List<String> updatedProperties = new ArrayList<>();
 
         userWishLists.forEach(wishlist -> {
-            Set<Propertyincludedinwishlist> propertyIncludedInWishLists = wishlist.getPropertyincludedinwishlists();
+            List<Propertyincludedinwishlist> propertyIncludedInWishLists = propertyIncludedInWishListService.getAllByName(userName, wishlist.getId().getWishlistName());
             propertyIncludedInWishLists.stream().forEach(property -> {
                 if(property.getFlag()){
                     updatedProperties.add(property.getPid().getPropertyName());

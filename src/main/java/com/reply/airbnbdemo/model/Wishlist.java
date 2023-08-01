@@ -31,6 +31,6 @@ public class Wishlist {
     private Character privacy;
 
     @OneToMany(mappedBy = "wishlistName")
-    private Set<Propertyincludedinwishlist> propertyincludedinwishlists = new LinkedHashSet<>();
+    private transient Set<Propertyincludedinwishlist> propertyincludedinwishlists = new LinkedHashSet<>();
 
 }

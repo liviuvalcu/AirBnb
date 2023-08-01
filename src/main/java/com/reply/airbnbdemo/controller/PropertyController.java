@@ -44,4 +44,9 @@ public class PropertyController {
     public ResponseEntity<List<PropertyDto>> getAllPropertiesByUserEmailOrCountry(){
         return ResponseEntity.ok(propertyService.getAllProperties());
     }
+
+    @GetMapping("byName")
+    public ResponseEntity<PropertyDto> getByName(@RequestParam("propertyName") String propertyName){
+        return ResponseEntity.ok(propertyService.getPropertyByNameDto(propertyName));
+    }
 }
