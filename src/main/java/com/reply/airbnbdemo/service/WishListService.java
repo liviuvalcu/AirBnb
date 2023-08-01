@@ -25,7 +25,7 @@ public class WishListService {
 
 
     @Transactional
-    public void createWishList(String userEmail, String wishListName, String privacy, List<String> propertiesToBeIncluded){
+    public Wishlist createWishList(String userEmail, String wishListName, String privacy){
         Airbnbuser user = userService.findByEmailEntity(userEmail);
 
         WishlistId id = WishlistId.builder().airBnBUID(user.getId()).wishlistName(wishListName).build();
@@ -37,8 +37,14 @@ public class WishListService {
                 .build();
 
         wishListRepository.saveAndFlush(wishlist);
-        propertyIncludedInWishListService.addPropertyInWishList(wishlist, propertyService.getPropertiesByName(propertiesToBeIncluded));
+        return wishlist;
+    }
 
+    @Transactional
+    public void addPropertiesToWishList(String wishlistName, List<String> propertiesToBeIncluded, String userName){
+        propertyIncludedInWishListService.addPropertyInWishList(wishListRepository
+                .findAllByUserNameAndWishListName(userName,
+                        wishlistName), propertyService.getPropertiesByName(propertiesToBeIncluded));
     }
 
     public void  updateWishList(String userEmail, String wishListName, String privacy, List<String> propertiesToBeIncluded){
@@ -65,10 +71,10 @@ public class WishListService {
     }
 
     public List<WishlistDto> getAll(String username){
-      return   wishListRepository.findAllByUserName(username).stream().map(wishList -> {
+      return  wishListRepository.findAllByUserName(username).stream().map(wishList -> {
           WishlistDto dto = modelMapper.map(wishList, WishlistDto.class);
 
-          dto.setIdAirBnBUID(wishList.getAirBnBUID().getId());
+          dto.setIdAirBnBUID(wishList.getId().getAirBnBUID());
           dto.setIdWishlistName(wishList.getId().getWishlistName());
           return dto;
       }).collect(Collectors.toList());

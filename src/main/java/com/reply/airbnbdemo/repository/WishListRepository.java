@@ -24,4 +24,7 @@ public interface WishListRepository extends JpaRepository<Wishlist, WishlistId> 
     List<Wishlist> findAllByUserName(@Param("username") String username);
 
     void deleteById(@Param("id") WishlistId id);
+
+    @Query(value = "select w from Wishlist w where w.airBnBUID.airbnbuser.email= :username and w.id.wishlistName = :wishListName")
+    Wishlist findAllByUserNameAndWishListName(@Param("username") String username, @Param("wishListName") String wishListName);
 }

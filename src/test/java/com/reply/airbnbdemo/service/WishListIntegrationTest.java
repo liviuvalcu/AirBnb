@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WishListIntegrationTest {
 
     @Container
-    static MySQLContainer mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql:8.0-debian"));
+    static MySQLContainer mySQLContainer = new MySQLContainer<>(DockerImageName.parse("mysql:8.0-debian")).withUsername("root").withPassword("pass").withInitScript("init.sql");
 
     @Autowired
     private MockMvc mockMvc;
@@ -84,10 +84,20 @@ public class WishListIntegrationTest {
         MultiValueMap<String, String> properties = new LinkedMultiValueMap<>();
         properties.addAll("propertiesToBeIncluded", ObjectCreatorUtility.getListOfPropertyNames());
 
+        String wishListName = ObjectCreatorUtility.getWishListName();
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/wishList/create")
                         .params(properties)
-                        .param("wishListName", ObjectCreatorUtility.getWishListName())
+                        .param("wishListName",wishListName)
                         .param("privacy", ObjectCreatorUtility.getPrivacy())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(print())
+                .andReturn();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/wishList/properties")
+                        .params(properties)
+                        .param("wishListName", wishListName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print())

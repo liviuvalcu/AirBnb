@@ -38,12 +38,11 @@ class WishListServiceTest {
         String userEmail = ObjectCreatorUtility.getUserEmail();
         String wishlistName = ObjectCreatorUtility.getWishListName();
         String privacy = ObjectCreatorUtility.getPrivacy();
-        List<String> includedProperties = ObjectCreatorUtility.getListOfPropertyNames();
 
         when(userService.findByEmailEntity(userEmail)).thenReturn(Airbnbuser.builder().build());
 
 
-        wishListService.createWishList(userEmail, wishlistName, privacy, includedProperties);
+        wishListService.createWishList(userEmail, wishlistName, privacy);
     }
 
     @Test
@@ -87,7 +86,10 @@ class WishListServiceTest {
     void getAll() {
         String userEmail = ObjectCreatorUtility.getUserEmail();
 
-        when(wishListRepository.findAllByUserName(userEmail)).thenReturn(List.of(Wishlist.builder().build()));
+        when(wishListRepository.findAllByUserName(userEmail)).thenReturn(List.of(Wishlist
+                .builder()
+                        .id(WishlistId.builder().airBnBUID(10).build())
+                .build()));
         when(modelMapper.map(any(), any())).thenReturn(WishlistDto.builder().build());
         List<WishlistDto> dtos = wishListService.getAll(userEmail);
         assertNotNull(dtos);

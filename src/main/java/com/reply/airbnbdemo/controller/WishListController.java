@@ -23,9 +23,21 @@ public class WishListController {
                                                  @RequestParam("wishListName") String wishListName,
                                                  @RequestParam("privacy") String privacy,
                                                  Authentication authentication){
-        wishListService.createWishList(authentication.getName(), wishListName, privacy,  propertiesToBeIncluded);
+
+                wishListService.createWishList(authentication.getName(), wishListName, privacy);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping("properties")
+    public ResponseEntity<String> addProperties(@RequestParam("propertiesToBeIncluded") List<String> propertiesToBeIncluded,
+                                                @RequestParam("wishListName") String wishListName,
+                                                Authentication authentication){
+
+        wishListService.addPropertiesToWishList(wishListName, propertiesToBeIncluded, authentication.getName());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @PostMapping("update")
     public ResponseEntity<String> updateWishList(@RequestParam("wishListName")String wishListName,
