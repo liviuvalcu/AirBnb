@@ -11,16 +11,23 @@ import com.reply.airbnbdemo.model.Airbnbuser;
 import com.reply.airbnbdemo.model.Booking;
 import com.reply.airbnbdemo.model.Propertylisting;
 import com.reply.airbnbdemo.repository.BookingRepository;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -77,6 +84,27 @@ public class BookingService {
 
         bookingRepository.save(myBooking);
         return myBooking;
+    }
+
+    public void createBookingsFromFile(MultipartFile file) throws IOException {
+       InputStream inputStream = file.getInputStream();
+        DataFormatter formatter = new DataFormatter(Locale.US);
+        Workbook workbook = new XSSFWorkbook(inputStream);
+
+        Sheet sheet = workbook.getSheetAt(0);
+        for(Row row :sheet){
+            BookingBean bean = BookingBean.builder().build();
+
+                bean.setCheckInDate(row.getCell(0).getLocalDateTimeCellValue().toLocalDate());
+                bean.setCheckOutDate(row.getCell(1).getLocalDateTimeCellValue().toLocalDate());
+                bean.setSeniorGuestNum(new Double(row.getCell(2).getNumericCellValue()).intValue());
+                bean.setAdultGuestNum(new Double(row.getCell(3).getNumericCellValue()).intValue());
+                bean.setChildGuestNum(new Double(row.getCell(4).getNumericCellValue()).intValue());
+                bean.setGuestEmail(row.getCell(5).getRichStringCellValue().toString());
+                bean.setPropertyName(row.getCell(6).getRichStringCellValue().toString());
+            createBooking(bean);
+        }
+
     }
 
     public List<BookingDto> getAllByPropertyName(String propertyName){
