@@ -25,8 +25,8 @@ INSERT INTO Guest(AirBnBUID, AvgRating, NumOfRatings, CreditCardNum) VALUES (
                                                                             2666
                            );
 
-INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate )  values('Silver discount test', 10, 5, 500, 'SILVER', current_date());
-INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate  )  values('Gold discount test', 15, 10, 800, 'GOLD', current_date());
-INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate  )  values('Platinum discount test', 20, 15, 900, 'PLATINUM', current_date());
+INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate )  values('Silver discount test', 10, 14, 500, 'SILVER', current_date());
+INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate  )  values('Gold discount test', 15, 19, 800, 'GOLD', current_date());
+INSERT INTO discount (name, discount, minimNights, minimalAmountSpent,discountLevels,createdDate  )  values('Platinum discount test', 24, 15, 900, 'PLATINUM', current_date());
 
 INSERT INTO  propertylisting(PID, PropertyName, ZipCode, PricePerNight,Created, HID) VALUES (2666,'Discount Property',  5666, 100, current_date(), (select AirBnBUID from AirBnBUser where Email = 'discount@test.com'));
