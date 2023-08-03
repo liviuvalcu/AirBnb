@@ -52,7 +52,7 @@ public class WishListIntegrationNoContainerTest {
     private UserService userService;
 
     @Autowired
-    PropertyService propertyService;
+    private PropertyService propertyService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -188,6 +188,10 @@ public class WishListIntegrationNoContainerTest {
         assertEquals(0, resultMessageContent.size());
     }
 
+    private void createProperty(String propertyName, String email){
+        propertyService.createProperty(ObjectCreatorUtility.getPropertyBean(propertyName, email, new BigDecimal(100)));
+    }
+
     private Airbnbuser createBnBUser(UserType userType, String email){
         Airbnbuser user = userService.insertUser(UserBean.builder()
                 .fname("FNAME")
@@ -204,16 +208,6 @@ public class WishListIntegrationNoContainerTest {
         else
             userService.setUserType(UserType.HOST, user.getId());
         return user;
-    }
-
-    private void createProperty(String propertyName, String email){
-        propertyService.createProperty(PropertyBean
-                .builder()
-                .zipcode(123)
-                .pricePerNight(new BigDecimal(100))
-                .hostEmail(email)
-                .propertyName(propertyName)
-                .build());
     }
 
     @Autowired

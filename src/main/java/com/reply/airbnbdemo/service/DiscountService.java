@@ -47,6 +47,15 @@ public class DiscountService {
     }
 
     @Transactional
+    public void updateDiscountMinimalAmountSpentByName(String name, BigDecimal minimalAmountSpent){
+
+        DiscountModel model = discountRepository.findByName(name);
+        model.setMinimalAmountSpent(minimalAmountSpent);
+
+        discountRepository.save(model);
+    }
+
+    @Transactional
     public void deleteDiscount(DiscountLevels discountLevels){
         discountRepository.deleteByDiscountLevels(discountLevels);
     }

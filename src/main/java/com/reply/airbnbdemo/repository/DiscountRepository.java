@@ -9,6 +9,7 @@ public interface DiscountRepository extends JpaRepository<DiscountModel, Integer
 
     void deleteByDiscountLevels(DiscountLevels discountLevels);
     DiscountModel findByDiscountLevels(DiscountLevels discountLevels);
+    DiscountModel findByName(String name);
 
     @Query(value = """
                     select d.discount from discount d where 

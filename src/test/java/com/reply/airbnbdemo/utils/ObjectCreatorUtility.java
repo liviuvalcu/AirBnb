@@ -1,5 +1,12 @@
 package com.reply.airbnbdemo.utils;
 
+import com.reply.airbnbdemo.bean.PropertyBean;
+import com.reply.airbnbdemo.bean.UserBean;
+import com.reply.airbnbdemo.enums.UserType;
+import com.reply.airbnbdemo.model.Airbnbuser;
+import com.reply.airbnbdemo.model.Booking;
+
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,5 +39,23 @@ public class ObjectCreatorUtility {
 
     public static String getUserEmail(){
         return userEmail;
+    }
+
+    public static Booking createBooking(Integer pricePerNight){
+        return Booking
+                .builder()
+
+                .build();
+    }
+
+
+    public static PropertyBean getPropertyBean(String propertyName, String email, BigDecimal pricePerNight) {
+        return PropertyBean
+                .builder()
+                .zipcode(123)
+                .pricePerNight(pricePerNight)
+                .hostEmail(email)
+                .propertyName(propertyName)
+                .build();
     }
 }

@@ -3,6 +3,8 @@ package com.reply.airbnbdemo.controller;
 import com.reply.airbnbdemo.bean.PropertyBean;
 import com.reply.airbnbdemo.dto.PropertyDto;
 import com.reply.airbnbdemo.service.PropertyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,8 @@ public class PropertyController {
     }
 
     @GetMapping("all")
+    //@Operation(summary = "Get all Properties", description = "All props")
+    //@SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<List<PropertyDto>> getAllPropertiesByUserEmailOrCountry(){
         return ResponseEntity.ok(propertyService.getAllProperties());
     }

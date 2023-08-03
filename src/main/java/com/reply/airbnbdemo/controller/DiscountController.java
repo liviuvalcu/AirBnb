@@ -37,6 +37,13 @@ public class DiscountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("updateAmountByName")
+    public ResponseEntity<Object> updateDiscountAmountByName(@RequestParam("name") String name,
+                                                 @RequestParam("minimalAmountSpent") BigDecimal minimalAmountSpent){
+        discountService.updateDiscountMinimalAmountSpentByName(name, minimalAmountSpent);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("delete")
     public ResponseEntity<Object> deleteDiscount(@RequestParam("discountLevels") DiscountLevels discountLevels){
         discountService.deleteDiscount(discountLevels);
